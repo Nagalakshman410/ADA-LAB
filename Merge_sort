@@ -1,97 +1,53 @@
-// C program for Merge Sort
-#include <stdio.h>
-#include <stdlib.h>
+#include<stdio.h>
+#include<stdlib.h>
 #include<time.h>
-#include<cstdlib>
+#define MAX 50
 
-// Merges two subarrays of arr[].
-// First subarray is arr[l..m]
-// Second subarray is arr[m+1..r]
-void merge(int arr[], int l, int m, int r)
-{
-	int i, j, k;
-	int n1 = m - l + 1;
-	int n2 = r - m;
+void mergeSort(int[],int,int);
+void simpleMerge(int[],int,int,int);
 
-	// Create temp arrays
-	int L[n1], R[n2];
-
-	// Copy data to temp arrays L[] and R[]
-	for (i = 0; i < n1; i++)
-		L[i] = arr[l + i];
-	for (j = 0; j < n2; j++)
-		R[j] = arr[m + 1 + j];
-
-	// Merge the temp arrays back into arr[l..r
-	i = 0;
-	j = 0;
-	k = l;
-	while (i < n1 && j < n2) {
-		if (L[i] <= R[j]) {
-			arr[k] = L[i];
-			i++;
-		}
-		else {
-			arr[k] = R[j];
-			j++;
-		}
-		k++;
-	}
-
-	// Copy the remaining elements of L[],
-	// if there are any
-	while (i < n1) {
-		arr[k] = L[i];
-		i++;
-		k++;
-	}
-
-	// Copy the remaining elements of R[],
-	// if there are any
-	while (j < n2) {
-		arr[k] = R[j];
-		j++;
-		k++;
-	}
-}
-
-// l is for left index and r is right index of the
-// sub-array of arr to be sorted
-void mergeSort(int arr[], int l, int r)
-{
-	if (l < r) {
-		int m = l + (r - l) / 2;
-
-		// Sort first and second halves
-		mergeSort(arr, l, m);
-		mergeSort(arr, m + 1, r);
-
-		merge(arr, l, m, r);
-	}
-}
-void printArray(int A[], int size)
-{
-    int i;
-    for (i = 0; i < size; i++)
-        printf("%d ", A[i]);
-    printf("\n");
-}
-// Driver code
 int main()
 {
-    srand(time(0));
-    clock_t start=clock();
-    int arr[40000],len=3000;
-    for(int i=0;i<len;i++)
-		arr[i]=rand()%1000;
-    printf("Given array is \n");
-    printArray(arr, len);
- 
-    mergeSort(arr, 0,  len - 1);
-    clock_t end=clock()-start;
-    double _time=(double)end/CLOCKS_PER_SEC;
-    printf("The time is: %lf" , _time);
-    printf("\nSorted array is \n");
-    printArray(arr, len);
-    return 0;
+    int array[MAX],size,i;
+    printf("Enter the size of an array: \n");
+    scanf("%d",&size);
+    printf("Enter array elements are: \n");
+    for(i=0;i<size;i++)
+    {
+        scanf("%d",&array[i]);
+    }
+    mergeSort(array, 0, size-1);
+
+    printf("\nAfter sorting array elements are: \n");
+    for(i=0;i<size;i++)
+        printf("%d\t",array[i]);
+}
+void mergeSort(int a[],int low,int high)
+{
+    int mid, i;
+    if(low<high)
+    {
+        mid=(low+high)/2;
+        mergeSort(a,low,mid);
+        mergeSort(a,mid+1,high);
+        simpleMerge(a,low,mid,high);
+    }
+}
+void simpleMerge(int a[],int low,int mid,int high)
+{
+    int i=low,j=mid+1,k=low;
+    int c[50];
+    while(i<=mid && j<=high)
+    {
+        if(a[i]<a[j])
+        c[k++]=a[i++];
+        else
+        c[k++]=a[j++];
+    }
+    while(i<=mid)
+        c[k++]=a[i++];
+    while(j<=high)
+        c[k++]=a[j++];
+    for(i=low;i<=high;i++)
+        a[i]=c[i];
 }
