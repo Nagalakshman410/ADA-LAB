@@ -1,14 +1,12 @@
-#include <stdio.h>
-
+#include<stdio.h>
 #define INF 99999
 
-void floyd(int graph[][100], int vertices) {
-    int i, j, k;
-
-    for (k = 0; k < vertices; k++) {
-        for (i = 0; i < vertices; i++) {
-            for (j = 0; j < vertices; j++) {
-                if (graph[i][k] + graph[k][j] < graph[i][j]) {
+void floyd(int graph[][100], int n){
+    int i, j ,k;
+    for(k=0; k<n; k++){
+        for(i=0; i<n; i++){
+            for(j=0; j<n; j++){
+                if(graph[i][k] + graph[k][j] < graph[i][j]){
                     graph[i][j] = graph[i][k] + graph[k][j];
                 }
             }
@@ -16,28 +14,27 @@ void floyd(int graph[][100], int vertices) {
     }
 }
 
-int main() {
-    int vertices;
-    printf("Enter the number of vertices: ");
-    scanf("%d", &vertices);
+int main(){
+    int n;
+    printf("Eneter no. of vertices: ");
+    scanf("%d", &n);
 
     int graph[100][100];
 
-    printf("Enter the adjacency matrix (%d x %d):\n", vertices, vertices);
-    for (int i = 0; i < vertices; i++) {
-        for (int j = 0; j < vertices; j++) {
+    printf("Enter the adjacency matrix of (%d x %d): \n",n , n);
+    for (int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
             scanf("%d", &graph[i][j]);
-            if (graph[i][j] == 0 && i != j) {
-                graph[i][j] = INF; // Set infinity for unreachable nodes (except the node to itself).
+            if (graph[i][j] == 0 && i != j){
+                graph[i][j] = INF;
             }
         }
     }
-
-    floyd(graph, vertices);
+    floyd(graph, n);
 
     printf("\nShortest paths (Adjacency Matrix):\n");
-    for (int i = 0; i < vertices; i++) {
-        for (int j = 0; j < vertices; j++) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
             if (graph[i][j] == INF) {
                 printf("INF\t");
             } else {
@@ -46,6 +43,7 @@ int main() {
         }
         printf("\n");
     }
-    getch();
+
+    getchar(); // Wait for user input
     return 0;
 }
